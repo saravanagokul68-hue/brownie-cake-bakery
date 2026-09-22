@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fudgery & Co. | Artisanal Brownie Cakes</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cocoa: {
+                            900: '#1a0c0a',
+                            800: '#2c1512',
+                            700: '#3d1e1a',
+                            600: '#522b25',
+                            500: '#6e3c35',
+                        },
+                        gold: {
+                            300: '#f6e088',
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#aa8c2c',
+                            700: '#80681f',
+                        },
+                        cream: '#FAF6F0',
+                        warmwhite: '#FFFDF9',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a0c0a;
+            color: #FAF6F0;
+            overflow-x: hidden;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF0B3 0%, #D4AF37 50%, #AA8C2C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border {
+            border-image: linear-gradient(to bottom right, #D4AF37, #522b25) 1;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0c0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d1e1a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+        /* Layer animation pulse */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(0.5deg); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-cocoa-900 text-cream selection:bg-gold-500 selection:text-cocoa-900">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-cocoa-900/90 backdrop-blur-md border-b border-cocoa-700/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gold-600 via-gold-400 to-gold-300 flex items-center justify-center shadow-lg shadow-gold-500/10">
+                        <i data-lucide="cake" class="w-6 h-6 text-cocoa-900"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl font-bold tracking-wider gold-gradient-text block leading-none">THE FUDGERY & CO.</span>
+                        <span class="text-[10px] tracking-widest text-gold-400/80 uppercase font-light">Artisanal Brownie Bakery</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#customizer" class="hover:text-gold-400 transition-colors py-2 flex items-center gap-1.5">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-gold-400"></i> Customizer
+                    </a>
+                    <a href="#catalog" class="hover:text-gold-400 transition-colors py-2">Signature Creations</a>
+                    <a href="#quiz" onclick="openQuizModal()" class="hover:text-gold-400 transition-colors py-2 flex items-center gap-1 text-gold-300">
+                        <i data-lucide="help-circle" class="w-4 h-4"></i> Flavor Finder
+                    </a>
+                    <a href="#reviews" class="hover:text-gold-400 transition-colors py-2">Reviews</a>
+                    <a href="#faq" class="hover:text-gold-400 transition-colors py-2">FAQ</a>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleCart()" class="relative p-2.5 rounded-full bg-cocoa-800 border border-cocoa-600/60 hover:border-gold-500/50 transition-all group">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-gold-400 group-hover:scale-110 transition-transform"></i>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-gold-500 text-cocoa-900 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </button>
+                    <a href="#customizer" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 text-cocoa-900 font-semibold text-sm hover:brightness-110 shadow-lg shadow-gold-500/20 transition-all hover:scale-105">
+                        <span>Design Your Cake</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen pt-28 pb-16 flex items-center justify-center overflow-hidden">
+        <!-- Background Ambient Glow -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cocoa-700/30 via-cocoa-900 to-cocoa-900 -z-10"></div>
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold-500/30 bg-gold-500/10 text-gold-300 text-xs tracking-wider uppercase mb-6 font-medium">
+                <i data-lucide="award" class="w-4 h-4 text-gold-400"></i> Freshly Baked & Delivered Express
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight mb-6 leading-tight">
+                Decadence Hand-Crafted <br>
+                <span class="gold-gradient-text italic font-normal">Layer by Rich Layer.</span>
+            </h1>
+            
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-cream/70 font-light mb-10 leading-relaxed">
+                Experience ultra-fudgy Belgian chocolate brownie cakes, meticulously stacked with rich ganache, toasted toppings, and personalized gold frosting.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                <a href="#customizer" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-cocoa-900 font-bold text-base hover:shadow-xl hover:shadow-gold-500/20 hover:scale-105 transition-all flex items-center justify-center gap-3">
+                    <i data-lucide="wand-2" class="w-5 h-5"></i> Build Custom Brownie Cake
+                </a>
+                <a href="#catalog" class="w-full sm:w-auto px-8 py-4 rounded-full bg-cocoa-800/80 border border-gold-500/30 text-gold-300 hover:bg-cocoa-700 font-semibold text-base transition-all flex items-center justify-center gap-2">
+                    <span>Explore Ready Collections</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 pt-12 border-t border-cocoa-700/50 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">100%</div>
+                    <div class="text-xs text-cream/60 mt-1 uppercase tracking-wider">Belgian Callebaut</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">4.9 ★</div>
+                    <div class="text-xs text-cream/60 mt-1 uppercase tracking-wider">Over 2,400 Reviews</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">Same Day</div>
+                    <div class="text-xs text-cream/60 mt-1 uppercase tracking-wider">Express Delivery</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">Bespoke</div>
+                    <div class="text-xs text-cream/60 mt-1 uppercase tracking-wider">Custom Message</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Interactive 3D / Visual Cake Builder -->
+    <section id="customizer" class="py-20 bg-cocoa-800/40 border-y border-cocoa-700/50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-gold-400 text-xs font-semibold tracking-widest uppercase">The Atelier</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-warmwhite mt-2">Design Your Bespoke Brownie Cake</h2>
+                <p class="text-cream/70 text-sm sm:text-base mt-2">Customize size, cocoa intensity, gooey layers, gourmet toppings, and custom script messages in real-time.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Visual Canvas / 3D Render Display -->
+                <div class="lg:col-span-6 bg-cocoa-900 border border-gold-500/20 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-between min-h-[500px] shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-4 left-4 bg-cocoa-800/80 border border-cocoa-600 px-3 py-1 rounded-full text-xs text-gold-300 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Live Canvas Preview
+                    </div>
+                    
+                    <button onclick="resetCustomizer()" class="absolute top-4 right-4 text-xs text-cream/50 hover:text-gold-400 flex items-center gap-1 transition-colors">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                    </button>
+
+                    <!-- Interactive Cake Graphics Container -->
+                    <div class="my-auto w-full max-w-xs sm:max-w-sm flex flex-col items-center justify-center relative py-12">
+                        <!-- Simulated Cake Assembly Container -->
+                        <div id="cake-preview-container" class="relative w-64 h-64 flex flex-col items-center justify-end transition-transform duration-500 animate-float">
+                            <!-- Cake Base Shadow -->
+                            <div id="cake-shadow" class="absolute bottom-0 w-60 h-8 bg-black/60 rounded-full blur-md transition-all duration-300"></div>
+                            
+                            <!-- Cake Board -->
+                            <div class="w-64 h-4 bg-gradient-to-r from-gold-600 via-gold-300 to-gold-600 rounded-lg shadow-md z-10 border-b border-gold-700/50"></div>
+                            
+                            <!-- Bottom Brownie Base Tier -->
+                            <div id="cake-base-layer" class="w-56 h-16 bg-cocoa-800 rounded-xl relative shadow-2xl transition-all duration-300 flex items-center justify-center border-t-2 border-cocoa-600 overflow-hidden mb-[-2px] z-20">
+                                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:8px_8px]"></div>
+                                <!-- Fudgy Texture lines -->
+                                <div class="w-full h-2 bg-cocoa-900/60 absolute bottom-3"></div>
+                            </div>
+
+                            <!-- Middle Ganache Filling -->
+                            <div id="cake-filling-layer" class="w-52 h-4 bg-cocoa-900 rounded-md relative shadow-inner z-20 transition-all duration-300 mb-[-2px] border-y border-cocoa-700"></div>
+
+                            <!-- Top Brownie Tier (Visible on Multi-Tier) -->
+                            <div id="cake-top-layer" class="w-48 h-12 bg-cocoa-800 rounded-lg relative shadow-xl transition-all duration-300 z-20 border-t-2 border-cocoa-600 overflow-hidden mb-[-2px]">
+                                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:8px_8px]"></div>
+                            </div>
+
+                            <!-- Toppings Render Overlay -->
+                            <div id="cake-toppings-layer" class="absolute top-2 z-30 w-full flex items-center justify-center pointer-events-none min-h-[30px]">
+                                <!-- Dynamic toppings SVGs generated by JS -->
+                            </div>
+
+                            <!-- Gold Flakes Render -->
+                            <div id="cake-gold-flakes" class="absolute inset-0 z-35 pointer-events-none hidden">
+                                <div class="absolute top-6 left-12 w-3 h-3 bg-gold-300 rotate-45 rounded-xs animate-pulse opacity-90 shadow-gold-400"></div>
+                                <div class="absolute top-10 right-16 w-2 h-2 bg-gold-400 rotate-12 rounded-xs opacity-80"></div>
+                                <div class="absolute top-14 left-20 w-2.5 h-2.5 bg-gold-300 rotate-90 rounded-xs opacity-85"></div>
+                            </div>
+
+                            <!-- Frosting Text Overlay -->
+                            <div id="cake-text-overlay" class="absolute z-40 top-12 font-serif text-xs font-bold tracking-widest text-gold-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)] italic text-center max-w-[140px] break-words">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Summary Bar -->
+                    <div class="w-full pt-4 border-t border-cocoa-700/60 flex items-center justify-between text-xs sm:text-sm">
+                        <div>
+                            <span class="text-cream/60">Estimated Weight: </span>
+                            <span id="cake-weight-label" class="font-semibold text-gold-300">1.2 kg (Serves 8-10)</span>
+                        </div>
+                        <div>
+                            <span class="text-cream/60">Total: </span>
+                            <span id="custom-total-price" class="font-serif text-xl font-bold text-gold-400">$48.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customizer Options Controls -->
+                <div class="lg:col-span-6 bg-cocoa-900/60 border border-cocoa-700 p-6 sm:p-8 rounded-3xl space-y-6">
+                    
+                    <!-- 1. Size & Structure -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-gold-400 font-semibold mb-3">1. Select Size & Structure</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="updateCustomizer('size', 'single')" id="size-btn-single" class="customizer-btn size-btn p-3 rounded-xl border border-cocoa-600 bg-cocoa-800 text-left hover:border-gold-500/50 transition-all active-option">
+                                <div class="font-semibold text-sm">Classic</div>
+                                <div class="text-xs text-cream/60 mt-0.5">6" Single Tier ($38)</div>
+                            </button>
+                            <button onclick="updateCustomizer('size', 'double')" id="size-btn-double" class="customizer-btn size-btn p-3 rounded-xl border border-cocoa-600 bg-cocoa-800 text-left hover:border-gold-500/50 transition-all">
+                                <div class="font-semibold text-sm">Deluxe</div>
+                                <div class="text-xs text-cream/60 mt-0.5">8" Double Tier ($48)</div>
+                            </button>
+                            <button onclick="updateCustomizer('size', 'grand')" id="size-btn-grand" class="customizer-btn size-btn p-3 rounded-xl border border-cocoa-600 bg-cocoa-800 text-left hover:border-gold-500/50 transition-all">
+                                <div class="font-semibold text-sm">Grand Tower</div>
+                                <div class="text-xs text-cream/60 mt-0.5">10" 3-Tier ($68)</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Chocolate Type -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-gold-400 font-semibold mb-3">2. Belgian Chocolate Profile</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                            <button onclick="updateCustomizer('choco', 'dark')" id="choco-btn-dark" class="customizer-btn choco-btn p-2.5 rounded-xl border border-cocoa-600 bg-cocoa-800 text-center hover:border-gold-500/50 transition-all active-option">
+                                <span class="w-3 h-3 rounded-full bg-[#2b1810] inline-block mr-1"></span>
+                                <span class="text-xs font-medium">70% Dark</span>
+                            </button>
+                            <button onclick="updateCustomizer('choco', 'milk')" id="choco-btn-milk" class="customizer-btn choco-btn p-2.5 rounded-xl border border-cocoa-600 bg-cocoa-800 text-center hover:border-gold-500/50 transition-all">
+                                <span class="w-3 h-3 rounded-full bg-[#633b28] inline-block mr-1"></span>
+                                <span class="text-xs font-medium">Silk Milk</span>
+                            </button>
+                            <button onclick="updateCustomizer('choco', 'white')" id="choco-btn-white" class="customizer-btn choco-btn p-2.5 rounded-xl border border-cocoa-600 bg-cocoa-800 text-center hover:border-gold-500/50 transition-all">
+                                <span class="w-3 h-3 rounded-full bg-[#f4e4c1] inline-block mr-1"></span>
+                                <span class="text-xs font-medium">Velvet White</span>
+                            </button>
+                            <button onclick="updateCustomizer('choco', 'ruby')" id="choco-btn-ruby" class="customizer-btn choco-btn p-2.5 rounded-xl border border-cocoa-600 bg-cocoa-800 text-center hover:border-gold-500/50 transition-all">
+                                <span class="w-3 h-3 rounded-full bg-[#b84a62] inline-block mr-1"></span>
+                                <span class="text-xs font-medium">Ruby Berry</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Fudginess Level Slider -->
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="text-xs uppercase tracking-wider text-gold-400 font-semibold">3. Fudginess Density Slider</label>
+                            <span id="fudginess-value" class="text-xs font-bold text-gold-300">Ultra-Fudgy & Goey</span>
+                        </div>
+                        <input type="range" id="fudge-slider" min="1" max="3" step="1" value="2" onchange="updateFudginess(this.value)" class="w-full accent-gold-500 bg-cocoa-800 h-2 rounded-lg cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-cream/50 mt-1">
+                            <span>Cakey-Fudge</span>
+                            <span>Classic Gooey Fudge</span>
+                            <span>Molten Lava Core (+ $3)</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. Gourmet Toppings (Multiple) -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-gold-400 font-semibold mb-3">4. Gourmet Toppings & Crusts</label>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-cocoa-800 border border-cocoa-600 hover:border-gold-500/40 cursor-pointer text-xs">
+                                <input type="checkbox" onchange="toggleTopping('salted_caramel', 4)" class="topping-cb accent-gold-500 rounded">
+                                <span>Salted Caramel Drizzle (+$4)</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-cocoa-800 border border-cocoa-600 hover:border-gold-500/40 cursor-pointer text-xs">
+                                <input type="checkbox" onchange="toggleTopping('hazelnut', 5)" class="topping-cb accent-gold-500 rounded">
+                                <span>Toasted Hazelnut Crunch (+$5)</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-cocoa-800 border border-cocoa-600 hover:border-gold-500/40 cursor-pointer text-xs">
+                                <input type="checkbox" onchange="toggleTopping('marshmallow', 4)" class="topping-cb accent-gold-500 rounded">
+                                <span>Torched Marshmallow Fluff (+$4)</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-cocoa-800 border border-cocoa-600 hover:border-gold-500/40 cursor-pointer text-xs">
+                                <input type="checkbox" onchange="toggleTopping('gold_flake', 6)" class="topping-cb accent-gold-500 rounded">
+                                <span>24K Edible Gold Flakes (+$6)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 5. Personalized Message -->
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-gold-400 font-semibold mb-2">5. Piped Gold Frosting Script Message</label>
+                        <input type="text" id="custom-message-input" max="25" placeholder="e.g. Happy B-Day Alex! (Max 25 chars)" oninput="updateMessageText(this.value)" class="w-full bg-cocoa-800 border border-cocoa-600 rounded-xl px-4 py-2.5 text-xs text-cream focus:outline-none focus:border-gold-500">
+                    </div>
+
+                    <!-- Add Custom Cake to Cart Button -->
+                    <button onclick="addCustomToCart()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-cocoa-900 font-bold text-sm hover:brightness-110 shadow-lg shadow-gold-500/20 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                        <span>Add Custom Creation to Cart</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pre-Made Artisanal Catalog Section -->
+    <section id="catalog" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <span class="text-gold-400 text-xs font-semibold tracking-widest uppercase">Master Chocolatier Collection</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-warmwhite mt-2">Artisanal Brownie Cakes</h2>
+            </div>
+            <!-- Filter Tags -->
+            <div id="filter-tags" class="flex flex-wrap gap-2 mt-6 md:mt-0">
+                <button onclick="filterCatalog('all', event)" class="filter-btn active-filter px-4 py-2 rounded-full border border-gold-500/40 bg-gold-500 text-cocoa-900 text-xs font-semibold transition-all" type="button">All</button>
+                <button onclick="filterCatalog('bestseller', event)" class="filter-btn px-4 py-2 rounded-full border border-cocoa-700 bg-cocoa-800 text-cream/80 hover:border-gold-500/30 text-xs transition-all" type="button">Bestsellers</button>
+                <button onclick="filterCatalog('nut-free', event)" class="filter-btn px-4 py-2 rounded-full border border-cocoa-700 bg-cocoa-800 text-cream/80 hover:border-gold-500/30 text-xs transition-all" type="button">Nut Free</button>
+                <button onclick="filterCatalog('fruity', event)" class="filter-btn px-4 py-2 rounded-full border border-cocoa-700 bg-cocoa-800 text-cream/80 hover:border-gold-500/30 text-xs transition-all" type="button">Fruity & Fresh</button>
+            </div>
+        </div>
+
+        <!-- Catalog Grid -->
+        <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Catalog items populated dynamically by JS -->
+        </div>
+    </section>
+
+    <!-- Flavor Quiz Banner / Trigger -->
+    <section class="py-16 bg-gradient-to-r from-cocoa-800 via-cocoa-700 to-cocoa-800 border-y border-gold-500/20 relative">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <i data-lucide="sparkles" class="w-8 h-8 text-gold-400 mx-auto mb-4 animate-bounce"></i>
+            <h3 class="font-serif text-3xl font-bold text-warmwhite">Not Sure Which Brownie Cake Fits Your Craving?</h3>
+            <p class="text-cream/70 text-sm mt-2 max-w-xl mx-auto">Take our 30-second taste quiz to uncover your ideal chocolate profile match.</p>
+            <button onclick="openQuizModal()" class="mt-6 px-8 py-3.5 rounded-full bg-gold-500 text-cocoa-900 font-bold text-sm hover:bg-gold-400 transition-all hover:scale-105 shadow-xl shadow-gold-500/10">
+                Start Flavor Finder Quiz
+            </button>
+        </div>
+    </section>
+
+    <!-- Customer Reviews & Showcase -->
+    <section id="reviews" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-gold-400 text-xs font-semibold tracking-widest uppercase">Loved by Connoisseurs</span>
+            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-warmwhite mt-2">What Our Guests Say</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-cocoa-800/50 border border-cocoa-700 p-6 rounded-2xl relative">
+                <div class="flex text-gold-400 mb-3">★★★★★</div>
+                <p class="text-sm text-cream/80 italic mb-6">"The Midnight Truffle Brownie Cake was the showstopper at our anniversary. The molten fudge texture is out of this world!"</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="w-10 h-10 rounded-full object-cover border border-gold-500/40" alt="Customer">
+                    <div>
+                        <div class="text-xs font-bold text-warmwhite">Evelyn Vance</div>
+                        <div class="text-[10px] text-cream/50">Verified Order • Manhattan</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-cocoa-800/50 border border-cocoa-700 p-6 rounded-2xl relative">
+                <div class="flex text-gold-400 mb-3">★★★★★</div>
+                <p class="text-sm text-cream/80 italic mb-6">"Designing my own 3-tier brownie cake online was so fun! The 24K gold flakes and piped message arrived flawlessly."</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" class="w-10 h-10 rounded-full object-cover border border-gold-500/40" alt="Customer">
+                    <div>
+                        <div class="text-xs font-bold text-warmwhite">Julian Sterling</div>
+                        <div class="text-[10px] text-cream/50">Verified Order • Brooklyn</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-cocoa-800/50 border border-cocoa-700 p-6 rounded-2xl relative">
+                <div class="flex text-gold-400 mb-3">★★★★★</div>
+                <p class="text-sm text-cream/80 italic mb-6">"Hands down the rich hazelnut crunch and dark chocolate combo is unmatched. Express delivery was right on time!"</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="w-10 h-10 rounded-full object-cover border border-gold-500/40" alt="Customer">
+                    <div>
+                        <div class="text-xs font-bold text-warmwhite">Sophia Laurent</div>
+                        <div class="text-[10px] text-cream/50">Verified Order • Chicago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-cocoa-800/30 border-t border-cocoa-700/50">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <span class="text-gold-400 text-xs font-semibold tracking-widest uppercase">Got Questions?</span>
+                <h2 class="text-3xl font-serif font-bold text-warmwhite mt-2">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-cocoa-900 border border-cocoa-700 rounded-xl overflow-hidden">
+                    <button onclick="toggleFAQ(1)" class="w-full text-left p-4 font-semibold text-sm flex items-center justify-between text-cream hover:text-gold-400">
+                        <span>How far in advance should I order?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-1" class="w-4 h-4 transition-transform"></i>
+                    </button>
+                    <div id="faq-ans-1" class="hidden px-4 pb-4 text-xs text-cream/70 leading-relaxed border-t border-cocoa-800 pt-3">
+                        We accept same-day express delivery orders placed before 1:00 PM local time. For custom multi-tier bespoke cakes, we recommend placing orders 24-48 hours ahead.
+                    </div>
+                </div>
+
+                <div class="bg-cocoa-900 border border-cocoa-700 rounded-xl overflow-hidden">
+                    <button onclick="toggleFAQ(2)" class="w-full text-left p-4 font-semibold text-sm flex items-center justify-between text-cream hover:text-gold-400">
+                        <span>How do I store and preserve freshness?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-2" class="w-4 h-4 transition-transform"></i>
+                    </button>
+                    <div id="faq-ans-2" class="hidden px-4 pb-4 text-xs text-cream/70 leading-relaxed border-t border-cocoa-800 pt-3">
+                        Our brownie cakes remain fresh at room temperature for up to 5 days, or refrigerated for up to 2 weeks. For maximum fudginess, warm a slice in the microwave for 10 seconds before serving!
+                    </div>
+                </div>
+
+                <div class="bg-cocoa-900 border border-cocoa-700 rounded-xl overflow-hidden">
+                    <button onclick="toggleFAQ(3)" class="w-full text-left p-4 font-semibold text-sm flex items-center justify-between text-cream hover:text-gold-400">
+                        <span>Do you offer gluten-free or allergen-friendly options?</span>
+                        <i data-lucide="chevron-down" id="faq-icon-3" class="w-4 h-4 transition-transform"></i>
+                    </button>
+                    <div id="faq-ans-3" class="hidden px-4 pb-4 text-xs text-cream/70 leading-relaxed border-t border-cocoa-800 pt-3">
+                        Yes! You can select nut-free options in our catalog or choose nut-free toppings in our customizer. We also prepare gluten-friendly almond flour brownie bases upon request in custom cart notes.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-cocoa-900 border-t border-cocoa-800 py-12 text-xs text-cream/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center text-cocoa-900">
+                    <i data-lucide="cake" class="w-5 h-5"></i>
+                </div>
+                <span class="font-serif text-lg font-bold text-warmwhite">THE FUDGERY & CO.</span>
+            </div>
+            <div>
+                &copy; 2026 The Fudgery & Co. Artisanal Bakery. All rights reserved. Handcrafted luxury brownie cakes.
+            </div>
+            <div class="flex space-x-6 text-cream/70">
+                <a href="#" class="hover:text-gold-400">Privacy Policy</a>
+                <a href="#" class="hover:text-gold-400">Terms of Service</a>
+                <a href="#" class="hover:text-gold-400">Contact Bakery</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Drawer Overlay -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0">
+        <div onclick="toggleCart()" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div id="cart-content" class="absolute top-0 right-0 bottom-0 w-full max-w-md bg-cocoa-900 border-l border-cocoa-700 p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300 pointer-events-auto">
+            
+            <div>
+                <!-- Cart Header -->
+                <div class="flex items-center justify-between border-b border-cocoa-700 pb-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-gold-400"></i>
+                        <h3 class="font-serif text-lg font-bold text-warmwhite">Your Brownie Order</h3>
+                    </div>
+                    <button onclick="toggleCart()" class="text-cream/50 hover:text-warmwhite">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items-list" class="my-6 space-y-4 max-h-[50vh] overflow-y-auto pr-1">
+                    <p class="text-center text-cream/50 py-8 text-xs">Your cart is empty. Add a custom or signature cake!</p>
+                </div>
+            </div>
+
+            <!-- Cart Footer / Checkout Button -->
+            <div class="border-t border-cocoa-700 pt-4 space-y-4">
+                <div class="flex items-center justify-between text-sm">
+                    <span class="text-cream/70">Subtotal</span>
+                    <span id="cart-subtotal" class="font-serif font-bold text-gold-400 text-lg">$0.00</span>
+                </div>
+                <button onclick="openCheckoutModal()" id="checkout-btn" disabled class="w-full py-3.5 rounded-xl bg-gold-500 text-cocoa-900 font-bold text-sm hover:bg-gold-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout & Order Tracking Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="bg-cocoa-900 border border-gold-500/30 rounded-3xl max-w-xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-cream/50 hover:text-warmwhite">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Step 1: Checkout Details Form -->
+            <div id="checkout-step-1">
+                <h3 class="font-serif text-2xl font-bold text-warmwhite mb-2">Express Checkout</h3>
+                <p class="text-xs text-cream/60 mb-6">Select delivery timing and optional custom greeting card.</p>
+
+                <form onsubmit="submitOrder(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block text-cream/80 font-medium mb-1">Delivery Address</label>
+                        <input type="text" required placeholder="Street address, Apartment, City" class="w-full bg-cocoa-800 border border-cocoa-600 rounded-xl px-3.5 py-2.5 text-cream focus:border-gold-500 outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-cream/80 font-medium mb-1">Delivery Date</label>
+                            <input type="date" required id="delivery-date-picker" class="w-full bg-cocoa-800 border border-cocoa-600 rounded-xl px-3.5 py-2.5 text-cream focus:border-gold-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-cream/80 font-medium mb-1">Preferred Time Window</label>
+                            <select class="w-full bg-cocoa-800 border border-cocoa-600 rounded-xl px-3.5 py-2.5 text-cream focus:border-gold-500 outline-none">
+                                <option>10:00 AM - 1:00 PM</option>
+                                <option>2:00 PM - 5:00 PM</option>
+                                <option>6:00 PM - 9:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-cream/80 font-medium mb-1">Free Gift Card Message</label>
+                        <textarea rows="2" placeholder="Write a gift note to include inside the bakery ribbon box..." class="w-full bg-cocoa-800 border border-cocoa-600 rounded-xl px-3.5 py-2.5 text-cream focus:border-gold-500 outline-none"></textarea>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-cocoa-900 font-bold text-sm hover:brightness-110 shadow-lg transition-all">
+                            Pay & Confirm Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Live Animated Order Tracker -->
+            <div id="checkout-step-2" class="hidden text-center py-4">
+                <div class="w-16 h-16 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-warmwhite">Order Confirmed!</h3>
+                <p class="text-xs text-cream/70 mt-1 mb-6">Order ID: <span class="font-mono text-gold-300">#FC-89240</span></p>
+
+                <!-- Order Status Steps -->
+                <div class="bg-cocoa-800 border border-cocoa-700 rounded-2xl p-6 text-left space-y-6 my-6">
+                    <div class="flex items-center gap-4">
+                        <div id="step-icon-1" class="w-8 h-8 rounded-full bg-gold-500 text-cocoa-900 flex items-center justify-center font-bold text-xs">1</div>
+                        <div>
+                            <div id="step-title-1" class="font-bold text-xs text-warmwhite">Order Received</div>
+                            <div class="text-[10px] text-cream/50">Kitchen queued your recipe parameters</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div id="step-icon-2" class="w-8 h-8 rounded-full bg-cocoa-700 text-cream/50 flex items-center justify-center font-bold text-xs">2</div>
+                        <div>
+                            <div id="step-title-2" class="font-bold text-xs text-cream/50">Baking in Belgian Oven</div>
+                            <div class="text-[10px] text-cream/50">Slow baking at 165°C for rich fudgy core</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div id="step-icon-3" class="w-8 h-8 rounded-full bg-cocoa-700 text-cream/50 flex items-center justify-center font-bold text-xs">3</div>
+                        <div>
+                            <div id="step-title-3" class="font-bold text-xs text-cream/50">Hand Decorating & Gold Leaf</div>
+                            <div class="text-[10px] text-cream/50">Master chef applying custom frosting script</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div id="step-icon-4" class="w-8 h-8 rounded-full bg-cocoa-700 text-cream/50 flex items-center justify-center font-bold text-xs">4</div>
+                        <div>
+                            <div id="step-title-4" class="font-bold text-xs text-cream/50">Out for Express Delivery</div>
+                            <div class="text-[10px] text-cream/50">On the way in temperature-controlled box</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="closeCheckoutModal()" class="px-6 py-2.5 rounded-full bg-cocoa-800 border border-cocoa-600 text-cream text-xs hover:bg-cocoa-700">
+                    Close Tracker
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Flavor Finder Quiz Modal -->
+    <div id="quiz-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="bg-cocoa-900 border border-gold-500/30 rounded-3xl max-w-lg w-full p-6 sm:p-8 relative">
+            <button onclick="closeQuizModal()" class="absolute top-5 right-5 text-cream/50 hover:text-warmwhite">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div id="quiz-question-container">
+                <span class="text-gold-400 text-[10px] font-semibold tracking-widest uppercase">Taste Profile Quiz</span>
+                <h3 id="quiz-title" class="font-serif text-2xl font-bold text-warmwhite mt-1 mb-6">What Cocoa Intensity Do You Prefer?</h3>
+                
+                <div id="quiz-options" class="space-y-3">
+                    <!-- Options populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Quiz Result -->
+            <div id="quiz-result-container" class="hidden text-center py-4">
+                <i data-lucide="award" class="w-12 h-12 text-gold-400 mx-auto mb-3"></i>
+                <span class="text-gold-400 text-xs font-semibold uppercase tracking-wider">Your Match</span>
+                <h3 id="quiz-matched-title" class="font-serif text-2xl font-bold text-warmwhite mt-1">Midnight Truffle Tower</h3>
+                <p id="quiz-matched-desc" class="text-xs text-cream/70 mt-2 mb-6">Rich 70% dark Belgian chocolate with intense fudgy center.</p>
+                
+                <button id="quiz-add-btn" class="w-full py-3.5 rounded-xl bg-gold-500 text-cocoa-900 font-bold text-sm hover:bg-gold-400 transition-all">
+                    Add Matched Cake To Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Product Modal -->
+    <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div id="quickview-content" class="bg-cocoa-900 border border-gold-500/30 rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative">
+            <!-- Populated dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // --- Catalog Data Model ---
+        const CATALOG_DATA = [
+            {
+                id: 'c1',
+                name: 'Ultimate Midnight Truffle',
+                tag: 'bestseller',
+                price: 52.00,
+                rating: 4.9,
+                reviews: 420,
+                desc: 'Quadruple 70% Belgian dark chocolate layers topped with hand-rolled cacao ganache truffles.',
+                image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop&q=80'
+            },
+            {
+                id: 'c2',
+                name: 'Pecan Salted Caramel Tower',
+                tag: 'bestseller',
+                price: 56.00,
+                rating: 4.9,
+                reviews: 310,
+                desc: 'Oozing house-made fleur de sel caramel interleaved between dense butter pecan brownie layers.',
+                image: 'https://images.unsplash.com/photo-1589119908995-c6837fa14848?w=600&auto=format&fit=crop&q=80'
+            },
+            {
+                id: 'c3',
+                name: 'Nutella & Espresso Swirl',
+                tag: 'nut-free',
+                price: 49.00,
+                rating: 4.8,
+                reviews: 280,
+                desc: 'Infused with roasted Arabica coffee beans and marbled creamy hazelnut chocolate crema.',
+                image: 'https://images.unsplash.com/photo-1515037893149-de7f840978e2?w=600&auto=format&fit=crop&q=80'
+            },
+            {
+                id: 'c4',
+                name: 'Matcha White Choc Velvet',
+                tag: 'fruity',
+                price: 54.00,
+                rating: 4.7,
+                reviews: 195,
+                desc: 'Ceremonial Uji Matcha brownie tier paired with silky Swiss white chocolate ganache.',
+                image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&auto=format&fit=crop&q=80'
+            },
+            {
+                id: 'c5',
+                name: 'Triple Berry Bliss',
+                tag: 'fruity',
+                price: 50.00,
+                rating: 4.9,
+                reviews: 215,
+                desc: 'Tart raspberry & blackberry reduction drizzled over dark fudgy brownie cake tier.',
+                image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=600&auto=format&fit=crop&q=80'
+            },
+            {
+                id: 'c6',
+                name: 'Golden Marshmallow Fudge',
+                tag: 'bestseller',
+                price: 55.00,
+                rating: 5.0,
+                reviews: 180,
+                desc: 'Torched fluff marshmallow topping with 24K edible gold flakes and graham cracker dust.',
+                image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80'
+            }
+        ];
+
+        // --- Customizer State ---
+        let customizerState = {
+            size: 'double', // single ($38), double ($48), grand ($68)
+            choco: 'dark',  // dark, milk, white, ruby
+            fudginess: 2,   // 1, 2, 3
+            toppings: {},   // key: price
+            message: ''
+        };
+
+        // --- Shopping Cart State ---
+        let cart = [];
+
+        // --- Initialize Page ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderCatalog('all');
+            updateCustomizerView();
+            
+            // Set minimum delivery date to tomorrow
+            const datePicker = document.getElementById('delivery-date-picker');
+            if(datePicker) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                datePicker.min = tomorrow.toISOString().split('T')[0];
+                datePicker.value = tomorrow.toISOString().split('T')[0];
+            }
+        });
+
+        // --- Catalog Rendering & Filtering ---
+        function renderCatalog(filter) {
+            const container = document.getElementById('catalog-grid');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' ? CATALOG_DATA : CATALOG_DATA.filter(item => item.tag === filter);
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-cocoa-800/40 border border-cocoa-700/60 rounded-3xl overflow-hidden hover:border-gold-500/50 transition-all duration-300 group flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative overflow-hidden h-56">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-3 right-3 bg-cocoa-900/80 backdrop-blur-sm border border-gold-500/30 px-3 py-1 rounded-full text-[10px] font-bold text-gold-300 uppercase tracking-wider">
+                                ${item.tag}
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-serif text-lg font-bold text-warmwhite group-hover:text-gold-300 transition-colors">${item.name}</h3>
+                                <span class="text-xs text-gold-400 font-bold">★ ${item.rating}</span>
+                            </div>
+                            <p class="text-xs text-cream/60 leading-relaxed mb-4">${item.desc}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-cocoa-700/40 mt-auto">
+                        <span class="font-serif text-xl font-bold text-gold-400">$${item.price.toFixed(2)}</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="openQuickView('${item.id}')" class="px-3 py-2 rounded-xl bg-cocoa-700 text-cream/80 hover:text-warmwhite text-xs font-semibold transition-colors">
+                                Quick View
+                            </button>
+                            <button onclick="addToCartDirect('${item.id}')" class="p-2.5 rounded-xl bg-gold-500 text-cocoa-900 hover:bg-gold-400 transition-all">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function filterCatalog(tag, event) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active-filter', 'bg-gold-500', 'text-cocoa-900');
+                btn.classList.add('bg-cocoa-800', 'text-cream/80');
+            });
+            event.currentTarget.classList.add('active-filter', 'bg-gold-500', 'text-cocoa-900');
+            renderCatalog(tag);
+        }
+
+        // --- Customizer Logic & Visual Sync ---
+        function updateCustomizer(key, value) {
+            customizerState[key] = value;
+            
+            // Toggle active styling on buttons
+            document.querySelectorAll(`.${key}-btn`).forEach(btn => btn.classList.remove('border-gold-500', 'bg-cocoa-700'));
+            document.getElementById(`${key}-btn-${value}`).classList.add('border-gold-500', 'bg-cocoa-700');
+
+            updateCustomizerView();
+        }
+
+        function updateFudginess(val) {
+            customizerState.fudginess = parseInt(val);
+            const labels = ['Cakey-Fudge Density', 'Classic Gooey Fudge', 'Molten Lava Core (+ $3)'];
+            document.getElementById('fudginess-value').innerText = labels[val - 1];
+            updateCustomizerView();
+        }
+
+        function toggleTopping(toppingKey, price) {
+            if(customizerState.toppings[toppingKey]) {
+                delete customizerState.toppings[toppingKey];
+            } else {
+                customizerState.toppings[toppingKey] = price;
+            }
+            updateCustomizerView();
+        }
+
+        function updateMessageText(msg) {
+            customizerState.message = msg;
+            const textOverlay = document.getElementById('cake-text-overlay');
+            textOverlay.innerText = msg;
+        }
+
+        function updateCustomizerView() {
+            // Price calculation
+            let price = 38; // base single tier
+            if(customizerState.size === 'double') price = 48;
+            if(customizerState.size === 'grand') price = 68;
+
+            if(customizerState.fudginess === 3) price += 3; // Molten core
+
+            Object.values(customizerState.toppings).forEach(p => price += p);
+
+            document.getElementById('custom-total-price').innerText = `$${price.toFixed(2)}`;
+
+            // Visual Tier Update
+            const baseLayer = document.getElementById('cake-base-layer');
+            const topLayer = document.getElementById('cake-top-layer');
+            const weightLabel = document.getElementById('cake-weight-label');
+
+            if(customizerState.size === 'single') {
+                topLayer.style.display = 'none';
+                baseLayer.className = "w-56 h-20 bg-cocoa-800 rounded-xl relative shadow-2xl transition-all duration-300 flex items-center justify-center border-t-2 border-cocoa-600 overflow-hidden mb-[-2px] z-20";
+                weightLabel.innerText = "0.8 kg (Serves 4-6)";
+            } else if(customizerState.size === 'double') {
+                topLayer.style.display = 'block';
+                topLayer.className = "w-44 h-12 bg-cocoa-800 rounded-lg relative shadow-xl transition-all duration-300 z-20 border-t-2 border-cocoa-600 overflow-hidden mb-[-2px]";
+                baseLayer.className = "w-56 h-16 bg-cocoa-800 rounded-xl relative shadow-2xl transition-all duration-300 flex items-center justify-center border-t-2 border-cocoa-600 overflow-hidden mb-[-2px] z-20";
+                weightLabel.innerText = "1.4 kg (Serves 8-10)";
+            } else {
+                topLayer.style.display = 'block';
+                topLayer.className = "w-40 h-16 bg-cocoa-800 rounded-lg relative shadow-xl transition-all duration-300 z-20 border-t-2 border-cocoa-600 overflow-hidden mb-[-2px]";
+                baseLayer.className = "w-60 h-18 bg-cocoa-800 rounded-xl relative shadow-2xl transition-all duration-300 flex items-center justify-center border-t-2 border-cocoa-600 overflow-hidden mb-[-2px] z-20";
+                weightLabel.innerText = "2.2 kg (Serves 12-16)";
+            }
+
+            // Color update based on chocolate choice
+            const colorMap = {
+                dark: '#2c1512',
+                milk: '#522b25',
+                white: '#ded0be',
+                ruby: '#8f3448'
+            };
+            baseLayer.style.backgroundColor = colorMap[customizerState.choco];
+            if(topLayer) topLayer.style.backgroundColor = colorMap[customizerState.choco];
+
+            // Gold flakes toggle
+            const goldFlakes = document.getElementById('cake-gold-flakes');
+            if(customizerState.toppings['gold_flake']) {
+                goldFlakes.classList.remove('hidden');
+            } else {
+                goldFlakes.classList.add('hidden');
+            }
+        }
+
+        function resetCustomizer() {
+            customizerState = { size: 'double', choco: 'dark', fudginess: 2, toppings: {}, message: '' };
+            document.querySelectorAll('.topping-cb').forEach(cb => cb.checked = false);
+            document.getElementById('custom-message-input').value = '';
+            document.getElementById('fudge-slider').value = 2;
+            updateMessageText('');
+            updateCustomizer('size', 'double');
+            updateCustomizer('choco', 'dark');
+        }
+
+        // --- Shopping Cart Functions ---
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const content = document.getElementById('cart-content');
+            if (drawer.classList.contains('opacity-0')) {
+                drawer.classList.remove('opacity-0', 'pointer-events-none');
+                content.classList.remove('translate-x-full');
+            } else {
+                drawer.classList.add('opacity-0', 'pointer-events-none');
+                content.classList.add('translate-x-full');
+            }
+        }
+
+        function addCustomToCart() {
+            let price = 38;
+            if(customizerState.size === 'double') price = 48;
+            if(customizerState.size === 'grand') price = 68;
+            if(customizerState.fudginess === 3) price += 3;
+            Object.values(customizerState.toppings).forEach(p => price += p);
+
+            const toppingNames = Object.keys(customizerState.toppings).join(', ') || 'Standard';
+
+            const customItem = {
+                id: 'custom-' + Date.now(),
+                name: `Bespoke ${customizerState.size.toUpperCase()} Brownie Cake`,
+                desc: `Chocolate: ${customizerState.choco.toUpperCase()} | Toppings: ${toppingNames} | Msg: "${customizerState.message || 'None'}"`,
+                price: price,
+                qty: 1
+            };
+
+            cart.push(customItem);
+            renderCart();
+            toggleCart();
+            confetti({ particleCount: 60, spread: 60, origin: { y: 0.8 } });
+        }
+
+        function addToCartDirect(itemId) {
+            const item = CATALOG_DATA.find(c => c.id === itemId);
+            if(!item) return;
+
+            const existing = cart.find(c => c.id === itemId);
+            if(existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+            renderCart();
+            toggleCart();
+        }
+
+        function renderCart() {
+            const list = document.getElementById('cart-items-list');
+            const badge = document.getElementById('cart-badge');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            list.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            if(cart.length === 0) {
+                list.innerHTML = `<p class="text-center text-cream/50 py-8 text-xs">Your cart is empty. Add a custom or signature cake!</p>`;
+                badge.classList.add('hidden');
+                checkoutBtn.disabled = true;
+                subtotalEl.innerText = '$0.00';
+                return;
+            }
+
+            cart.forEach((item, idx) => {
+                total += item.price * item.qty;
+                count += item.qty;
+
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-3 bg-cocoa-800/60 rounded-xl border border-cocoa-700 text-xs";
+                div.innerHTML = `
+                    <div class="pr-2">
+                        <div class="font-bold text-warmwhite">${item.name}</div>
+                        <div class="text-[10px] text-cream/60 truncate max-w-[200px]">${item.desc || ''}</div>
+                        <div class="text-gold-400 font-semibold mt-1">$${item.price.toFixed(2)} x ${item.qty}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="changeQty(${idx}, -1)" class="w-6 h-6 rounded bg-cocoa-700 flex items-center justify-center text-cream hover:bg-cocoa-600">-</button>
+                        <span class="font-bold">${item.qty}</span>
+                        <button onclick="changeQty(${idx}, 1)" class="w-6 h-6 rounded bg-cocoa-700 flex items-center justify-center text-cream hover:bg-cocoa-600">+</button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+
+            badge.innerText = count;
+            badge.classList.remove('hidden');
+            subtotalEl.innerText = `$${total.toFixed(2)}`;
+            checkoutBtn.disabled = false;
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if(cart[index].qty <= 0) cart.splice(index, 1);
+            renderCart();
+        }
+
+        // --- Checkout & Order Tracking ---
+        function openCheckoutModal() {
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            document.getElementById('checkout-step-1').classList.remove('hidden');
+            document.getElementById('checkout-step-2').classList.add('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            // Switch to live order tracker simulation
+            document.getElementById('checkout-step-1').classList.add('hidden');
+            document.getElementById('checkout-step-2').classList.remove('hidden');
+
+            cart = [];
+            renderCart();
+
+            // Simulate step by step order progression
+            setTimeout(() => {
+                document.getElementById('step-icon-2').className = "w-8 h-8 rounded-full bg-gold-500 text-cocoa-900 flex items-center justify-center font-bold text-xs";
+                document.getElementById('step-title-2').className = "font-bold text-xs text-warmwhite";
+            }, 2500);
+
+            setTimeout(() => {
+                document.getElementById('step-icon-3').className = "w-8 h-8 rounded-full bg-gold-500 text-cocoa-900 flex items-center justify-center font-bold text-xs";
+                document.getElementById('step-title-3').className = "font-bold text-xs text-warmwhite";
+            }, 5500);
+        }
+
+        // --- Quick View Modal ---
+        function openQuickView(itemId) {
+            const item = CATALOG_DATA.find(c => c.id === itemId);
+            if(!item) return;
+
+            const modal = document.getElementById('quickview-modal');
+            const content = document.getElementById('quickview-content');
+
+            content.innerHTML = `
+                <button onclick="closeQuickView()" class="absolute top-5 right-5 text-cream/50 hover:text-warmwhite">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <img src="${item.image}" class="w-full h-64 object-cover rounded-2xl border border-cocoa-700">
+                    <div>
+                        <span class="text-gold-400 text-[10px] font-bold uppercase tracking-wider">${item.tag}</span>
+                        <h3 class="font-serif text-2xl font-bold text-warmwhite mt-1">${item.name}</h3>
+                        <div class="text-gold-400 text-xs font-bold my-2">★ ${item.rating} (${item.reviews} customer reviews)</div>
+                        <p class="text-xs text-cream/70 leading-relaxed mb-6">${item.desc}</p>
+                        <div class="flex items-center justify-between border-t border-cocoa-700 pt-4">
+                            <span class="font-serif text-2xl font-bold text-gold-400">$${item.price.toFixed(2)}</span>
+                            <button onclick="addToCartDirect('${item.id}'); closeQuickView();" class="px-6 py-3 rounded-xl bg-gold-500 text-cocoa-900 font-bold text-xs hover:bg-gold-400 transition-all">
+                                Add To Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickview-modal').classList.add('hidden');
+        }
+
+        // --- Taste Quiz Logic ---
+        const QUIZ_QUESTIONS = [
+            {
+                q: "1. What cocoa intensity defines your ideal chocolate dessert?",
+                options: [
+                    { label: "70% Dark & Bittersweet", match: 'c1' },
+                    { label: "Smooth & Rich Milk Chocolate", match: 'c2' },
+                    { label: "Creamy White / Sweet Velvet", match: 'c4' }
+                ]
+            }
+        ];
+
+        function openQuizModal() {
+            document.getElementById('quiz-modal').classList.remove('hidden');
+            document.getElementById('quiz-question-container').classList.remove('hidden');
+            document.getElementById('quiz-result-container').classList.add('hidden');
+
+            const q = QUIZ_QUESTIONS[0];
+            document.getElementById('quiz-title').innerText = q.q;
+            
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 rounded-xl bg-cocoa-800 border border-cocoa-600 text-left text-xs font-medium hover:border-gold-500 hover:bg-cocoa-700 transition-all";
+                btn.innerText = opt.label;
+                btn.onclick = () => selectQuizOption(opt.match);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(matchedId) {
+            const item = CATALOG_DATA.find(c => c.id === matchedId) || CATALOG_DATA[0];
+
+            document.getElementById('quiz-question-container').classList.add('hidden');
+            document.getElementById('quiz-result-container').classList.remove('hidden');
+
+            document.getElementById('quiz-matched-title').innerText = item.name;
+            document.getElementById('quiz-matched-desc').innerText = item.desc;
+            
+            const btn = document.getElementById('quiz-add-btn');
+            btn.onclick = () => {
+                addToCartDirect(item.id);
+                closeQuizModal();
+            };
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+        }
+
+        // --- FAQ Toggle ---
+        function toggleFAQ(id) {
+            const ans = document.getElementById(`faq-ans-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            if(ans.classList.contains('hidden')) {
+                ans.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                ans.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>
